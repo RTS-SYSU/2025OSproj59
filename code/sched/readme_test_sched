@@ -1,0 +1,34 @@
+创建内核模块
+1.1 编写内核模块代码
+创建一个内核模块文件 test_sched.c，该模块将创建多个进程并让它们运行一段时间，以便测试调度算法。
+
+
+2.编写 Makefile
+创建一个 Makefile 来编译内核模块：
+makefile
+
+
+3. 编译内核模块
+make
+4. 加载内核模块
+sudo insmod test_sched.ko
+查看内核日志以确认模块加载成功:
+dmesg | tail
+
+5. 使用 QEMU 和 GDB 调试
+5.1 启动 QEMU
+启动 QEMU 并设置为监听 GDB 连接：
+qemu-system-x86_64 -kernel /path/to/vmlinux -initrd /path/to/initrd.img -append "console=ttyS0 nokaslr root=/dev/sda rw" -nographic -s -S
+
+5.2 启动 GDB 并连接到 QEMU
+在另一个终端启动 GDB 并连接到 QEMU：
+gdb /path/to/vmlinux
+(gdb) target remote :1234
+5.3 设置断点并调试
+(gdb) b schedule
+(gdb) c
+
+
+------------------
+任务完成后，选择性卸载内核测试模块：
+sudo rmmod test_sched
