@@ -1,1 +1,41 @@
+之后做完这些，我们需要修改 kernel/sched/Makefile，添加对 rr.c 的编译规则，例如：
+obj-$(CONFIG_SCHED_RR) += rr/
 
+在 kernel/sched/Kconfig 文件中，添加一个配置选项，允许用户在配置内核时选择是否启用你的轮转调度算法。例如：
+config SCHED_RR
+    bool "Round-Robin Scheduler"
+    default n
+    help
+        Enable the Round-Robin Scheduler. This is a simple scheduling algorithm
+        that assigns CPU time to processes in a round-robin fashion.
+（这将设置一个配置项，核心是定义了一个布尔配置选项 SCHED_RR）
+
+
+
+  运行make menuconfig配置内核，make -j$(nproc)编译内核，
+sudo mkinitramfs -o initrd.img来生成初始 RAM 磁盘（initrd），
+之后用qemu启动，伪代码如下：
+qemu-system-x86_64 -kernel /path/to/vmlinux -initrd /path/to/initrd.img -append "console=ttyS0 nokaslr root=/dev/sda rw" -nographic -s -S
+
+之后调用gdb调试：
+  gdb /path/to/vmlinux  
+  target remote :1234
+设置断点并调试：
+b start_kernel 
+c
+
+Linux 内核提供了一些 GDB 脚本，可以更方便地调试内核，运行并调用：
+source /path/to/linux-source/scripts/gdb/vmlinux-gdb.py
+例如：                       查看当前任务lx-current
+                            查看任务列表  lx-ps
+
+b schedule
+c
+每次调度发生时，GDB 会暂停执行，此时可以检查当前进程、就绪队列等信息，之后每次按c即可继续
+
+可以在gdb断点处输入查看当前任务的 task_struct 字段的命令：
+p $lx_current().pid   #p：打印 ，lx_current()：一个 GDB 脚本命令，返回        #当前运行的任务的 task_struct 指针 ，此时pid     #（）返回进程ID
+                          
+p $lx_current().comm   #返回进程名字
+
+通过以上操作可以简单测试RR算法是否在内核中生效
