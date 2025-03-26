@@ -6,7 +6,14 @@
 2.编写 Makefile
 创建一个 Makefile 来编译内核模块：
 makefile
+内容：
+obj-m += test_sched.o
 
+all:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+
+clean:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
 
 3. 编译内核模块
 make
