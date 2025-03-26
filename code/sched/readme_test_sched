@@ -39,3 +39,62 @@ gdb /path/to/vmlinux
 ------------------
 任务完成后，选择性卸载内核测试模块：
 sudo rmmod test_sched
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Tips：
+如果你是在修改 Linux 内核源码中的 `kernel/sched` 目录下的代码，那么确实需要在现有的 `Makefile` 和 `Kconfig` 文件中进行一些修改，以便将你的调度算法模块（例如 `rr.c`）集成到内核构建系统中。这不仅仅是简单地添加一个 `Makefile`，而是需要在内核的构建系统中正确地注册你的模块。
+
+以下是在 `kernel/sched` 目录中集成你的调度算法模块的详细步骤：
+
+1. 修改 `kernel/sched/Makefile`
+
+在 `kernel/sched/Makefile` 中，你需要添加你的模块文件，以便它能够被编译。假设你的模块文件名为 `rr.c`，并且你将它放在了 `kernel/sched/rr` 目录下，你需要在 `kernel/sched/Makefile` 中添加以下内容：
+
+obj-$(CONFIG_SCHED_RR) += rr/
+
+
+这行代码的意思是，如果配置选项 `CONFIG_SCHED_RR` 被启用，那么 `kernel/sched/rr` 目录下的文件将被编译。
+
+2. 修改 `kernel/sched/Kconfig`
+
+在 `kernel/sched/Kconfig` 文件中，你需要添加一个配置选项，允许用户在配置内核时选择是否启用你的调度算法。添加以下内容：
+
+
+config SCHED_RR
+    bool "Round-Robin Scheduler"
+    default n
+    help
+        Enable the Round-Robin Scheduler. This is a simple scheduling algorithm
+        that assigns CPU time to processes in a round-robin fashion.
+
+
+这行代码定义了一个布尔配置选项 `SCHED_RR`，用户可以在内核配置菜单中选择是否启用轮转调度算法。
+
+ 3. 创建 `kernel/sched/rr/Makefile`
+
+在你的 `kernel/sched/rr` 目录下，创建一个 `Makefile`，用于编译你的模块。内容如下：
+
+
+obj-$(CONFIG_SCHED_RR) += rr.o
+
+
+这行代码的意思是，如果配置选项 `CONFIG_SCHED_RR` 被启用，那么 `rr.c` 文件将被编译成 `rr.o`。
+
+4. 配置内核
+
+运行 `make menuconfig` 来配置内核。在配置菜单中，导航到 `Kernel hacking` -> `Scheduling`，找到 `Round-Robin Scheduler` 选项并启用它。
+
+
+make menuconfig
+
+
+5. 编译内核
+
+配置完成后，编译内核：
+
+
+make -j$(nproc)
+
+
+之后和前面一样
