@@ -1,0 +1,112 @@
+关于ajlr项目的java源代码结构解读：（以下由大模型生成）
+
+cache-aware-allocation\src\uk\ac\york\mocha\simulator目录下：
+
+
+1. **allocation（分配）**：
+   - 这个文件夹可能包含与资源分配相关的代码或配置，例如如何将任务分配给不同的处理器或资源。
+
+2. **entity（实体）**：
+   - 这个文件夹可能包含定义系统中各种实体（如任务、资源、作业等）的数据结构和类。
+
+3. **experiments_AJLR_v2_0（实验_AJLR_v2_0）**：
+   - 这个文件夹可能包含与特定版本（v2.0）的调度策略相关的实验代码或数据，可能用于测试或验证新策略的性能。
+
+4. **experiments_CARVB（实验_CARVB）**：
+   - 这个文件夹可能包含与CARVB调度策略相关的实验代码或数据，CARVB可能是另一种调度算法或策略。
+
+5. **experiments_Paper_AJLR_v1_0（论文_AJLR_v1_0实验）**：
+   - 这个文件夹可能包含与论文中描述的AJLR v1.0调度策略相关的实验代码或数据，用于复现论文中的实验结果。
+
+6. **experiments_real（真实实验）**：
+   - 这个文件夹可能包含在真实系统或环境中进行的实验代码或数据，用于评估调度策略在实际应用中的表现。
+
+7. **generator（生成器）**：
+   - 这个文件夹可能包含用于生成模拟数据或测试用例的工具或脚本，这些数据可以用于测试调度策略。
+
+8. **parameters（参数）**：
+   - 这个文件夹可能包含调度策略所需的各种参数配置文件，这些参数可能影响调度算法的行为。
+
+9. **production（生产）**：
+   - 这个文件夹可能包含用于生产环境的代码或配置，这些代码可能经过优化和测试，准备在实际系统中部署。
+
+10. **resultAnalyzer（结果分析器）**：
+    - 这个文件夹可能包含用于分析实验结果的工具或脚本，帮助研究人员理解调度策略的性能和行为。
+
+11. **simulator（模拟器）**：
+    - 这个文件夹可能包含用于模拟调度策略运行环境的代码，允许研究人员在控制的环境中测试和评估策略。
+
+这些文件夹的命名和内容可能会根据项目的具体需求和设计而有所不同，但上述解释提供了一个通用的理解框架。
+
+
+   src ----------------------
+              ---------------allocation
+                            -------empirical
+
+
+在 `allocation` 的文件夹，其中包含一个名为 `empirical` 的子文件夹。`empirical` 文件夹中包含了多个 Java 文件，这些文件很可能是实现不同资源分配策略和方法的代码。下面是对这些文件可能功能的简要解释：
+
+1. **OnlineCacheAwareNewSimu_base.java**：
+   - 可能是一个基础模拟类，用于实现缓存感知的在线资源分配策略。
+
+2. **OnlineFixedScheduleAllocation.java**：
+   - 可能实现了一种固定时间表的在线资源分配策略。
+
+3. **OnlineWFDNewSimu_Base.java**：
+   - 可能是另一个基础模拟类，用于实现某种新的在线资源分配策略（WFD可能是指某种特定的算法或策略）。
+
+4. **AllocationMethods.java**：
+   - 可能包含一组资源分配方法的实现。
+
+5. **OnlineAndOffline.java**：
+   - 可能实现了在线和离线资源分配策略的比较或集成。
+
+6. **onlineBFD.java**：
+   - 可能实现了一种名为BFD的在线资源分配策略。
+
+7. **OnlineCacheAware.java**：
+   - 可能实现了一种缓存感知的在线资源分配策略。
+
+8. **OnlineCacheAware_ForCompare.java**：
+   - 可能是为了比较不同缓存感知策略而实现的在线资源分配策略。
+
+9. **OnlineCacheAwareNewSimu.java**：
+   - 可能是一个新的缓存感知在线资源分配策略的模拟实现。
+
+10. **OnlineCacheAwarePredictability_WCET_Sensitivity_Compare.java**：
+    - 可能用于比较不同策略在预测性和最坏执行时间（WCET）敏感性方面的表现。
+
+11. **OnlineCacheAwareReverse.java**：
+    - 可能是一个反向缓存感知的在线资源分配策略。
+
+12. **OnlineCacheAwareRobust_v2_1.java / OnlineCacheAwareRobust_v2_2.java**：
+    - 可能是不同版本的鲁棒性缓存感知在线资源分配策略。
+
+13. **OnlineCacheAwareWithOrdering.java**：
+    - 可能实现了一种考虑任务顺序的缓存感知在线资源分配策略。
+
+14. **OnlineCARVB.java / OnlineCARVB_MSF.java / OnlineCARVB_SEEN.java**：
+    - 可能是实现了CARVB算法的不同版本或变体，CARVB可能是某种特定的资源分配算法。
+
+15. **OnlineFFD.java**：
+    - 可能实现了一种名为FFD的在线资源分配策略。
+
+16. **OnlineRandom.java**：
+    - 可能实现了一种随机的在线资源分配策略，用于基线比较。
+
+17. **OnlineWFD.java**：
+    - 可能实现了一种名为WFD的在线资源分配策略。
+
+18. **OnlineWFDNewSimu.java**：
+    - 可能是一个新的WFD在线资源分配策略的模拟实现。
+
+19. **OnlineWFWithOrdering.java**：
+    - 可能实现了一种考虑任务顺序的WFD在线资源分配策略。
+
+20. **SimpleAllocation.java**：
+    - 可能实现了一种简单的资源分配策略，用于基线比较或测试。
+
+21. **SimpleAllocationConversing.java**：
+    - 可能是一个简单的资源分配策略的变体，可能涉及某种转换或适配。
+
+这些文件的具体功能和实现细节需要查看每个文件的代码才能确定，但根据文件名，我们可以推测它们大致的用途和实现的策略。
